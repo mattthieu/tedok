@@ -1,0 +1,62 @@
+ {% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+    <br> <br> 
+        <div class="row">
+
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+
+                <h1 class="page-header">
+                    List of things
+                    <small>to decide</small>
+                </h1>
+
+                <!-- First Blog Post -->
+                <h2>
+                    <a href="#">Dunning Kruger effect</a>
+                </h2>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+
+                <!-- Second Blog Post -->
+                <h2>
+                    <a href="#">Github</a>
+                </h2>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+
+                <hr>
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

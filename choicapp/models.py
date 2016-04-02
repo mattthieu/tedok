@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Item(models.Model):
@@ -15,3 +16,8 @@ class Ressource(Item):
 
 class Proposition(Item):
     type_of_vote = models.CharField(max_length=200, blank=True, null=True)
+
+
+class Voter(models.Model):
+    user = models.OneToOneField(User)
+    pass_phrase = models.CharField(max_length=140, null=True, blank=True)

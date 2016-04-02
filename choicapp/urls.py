@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'^ressources$', views.show_ressources, name='ressources'),
     url(r'^logbook$', views.show_logbook, name='logbook'),
     url(r'^propositions$', views.show_propositions, name='propositions'),
+    url(r'^login$', views.login_user, name='login'),
+    url(r'^logout$', views.logout_user, name='logout'),
 ]

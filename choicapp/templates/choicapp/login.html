@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+ <div class="container"> 
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+                <h1 class="page-header">
+                    Log in
+                </h1>
+
+               {% if error %}
+                    <p><strong>Unknown user or bad password.</strong></p>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    You are connected, {{ user.username }} !
+                {% else %}
+                    <form action="{% url 'choicapp:login' %}" method="post" action=".">{% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Ok" />
+                    </form>
+                {% endif %}
+            </div>
+        </div><!-- /row -->
+    </div><!-- /container -->
+    
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

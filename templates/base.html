@@ -57,6 +57,14 @@
                         <a href="{% url 'choicapp:logbook' %}">Logbook</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'choicapp:index' %}"> Hi {{ user.username }}</a></li>
+                    <li><a href="{% url 'choicapp:logout' %}">Log out</a></li>
+                {% else %}
+                    <li><a href="{% url 'choicapp:login' %}">Log in</a></li>
+                {% endif %}
+              </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>

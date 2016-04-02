@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+ <div class="container"> 
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+                <h1 class="page-header">
+                    List of things
+                    <small>to absorb</small>
+                </h1>
+
+                {% for ressource in ressources %}
+                    <hr>
+
+                    <!-- Second Blog Post -->
+                    <h2>
+                        <a href="#"> {{ ressource.description }}</a>
+                    </h2>
+                    <p>Visibility = {{ ressource.visibility }}</p>
+                    {% if ressource.link %}
+                        <p>{{ ressource.link }}</p>
+                    {% endif %}
+                    <a class="btn btn-primary" href="#">Details <span class="glyphicon glyphicon-chevron-right"></span></a>                
+
+                {% endfor %}
+                <hr>
+
+                <hr>
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

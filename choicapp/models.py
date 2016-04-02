@@ -11,3 +11,7 @@ class Item(models.Model):
 
 class Ressource(Item):
     link = models.URLField(max_length=200, blank=True, null=True)
+
+
+class Proposition(Item):
+    type_of_vote = models.CharField(max_length=200, blank=True, null=True)

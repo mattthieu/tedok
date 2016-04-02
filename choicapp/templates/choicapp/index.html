@@ -19,24 +19,20 @@
                     <small>to decide</small>
                 </h1>
 
-                <!-- First Blog Post -->
-                <h2>
-                    <a href="#">Dunning Kruger effect</a>
-                </h2>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                {% for ressource in ressources %}
+                    <hr>
 
-                <hr>
+                    <!-- Second Blog Post -->
+                    <h2>
+                        <a href="#"> {{ ressource.description }}</a>
+                    </h2>
+                    <p>Visibility = {{ ressource.visibility }}</p>
+                    {% if ressource.link %}
+                        <p>{{ ressource.link }}</p>
+                    {% endif %}
+                    <a class="btn btn-primary" href="#">Details <span class="glyphicon glyphicon-chevron-right"></span></a>                
 
-                <!-- Second Blog Post -->
-                <h2>
-                    <a href="#">Github</a>
-                </h2>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
+                {% endfor %}
                 <hr>
 
                 <hr>

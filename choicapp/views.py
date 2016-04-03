@@ -16,7 +16,17 @@ def show_manifesti(request):
 
 def show_ressources(request):
     context = {}
-    context['ressources'] = Ressource.objects.all()
+    ressources = []
+    for ressource in Ressource.objects.all():
+        is_up_votable = False
+        is_down_votable = False
+        if request.user.is_authenticated():
+            if request.user.voter.ressource_visibility_pts > 0:
+                is_up_votable = True
+            if ressource in request.user.voter.ressources_voted.set_all():
+                is_down_votable = True
+        ressources.append((ressource, is_up_votable, is_down_votable))
+    context['ressources'] = ressources
     return render(request, 'choicapp/ressources.html', context=context)
 
 

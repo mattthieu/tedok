@@ -20,4 +20,7 @@ class Proposition(Item):
 
 class Voter(models.Model):
     user = models.OneToOneField(User)
-    pass_phrase = models.CharField(max_length=140, null=True, blank=True)
+
+class RessourceVoted(models.Model):
+    ressource = models.OneToOneField(Ressource)
+    number_of_votes = models.IntegerField(default=0)

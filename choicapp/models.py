@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Item(models.Model):
     description = models.CharField(max_length=500)
-    visibility = models.SmallIntegerField(default=0)
+    visibility = models.IntegerField(default=0)
 
     class Meta:
         abstract = True
@@ -20,6 +20,8 @@ class Proposition(Item):
 
 class Voter(models.Model):
     user = models.OneToOneField(User)
+    ressource_visibility_pts = models.IntegerField(default=10)
+
 
 class RessourceVoted(models.Model):
     ressource = models.OneToOneField(Ressource)

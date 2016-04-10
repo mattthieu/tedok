@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from choicapp.models import Value, Voter, Item_Voted
+from choicapp.forms import ValueForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 
 
 def index(request):
@@ -107,3 +110,49 @@ def down_value(request, *args, **kwargs):
     if i.points_given <= 0:
         i.delete()
     return redirect('/manifesti')
+
+
+class AddValue(View):
+    '''class based view to add/edit Value.'''
+    form_class = ValueForm
+    model = Value
+    template_name = 'choicapp/add_value.html'
+    template_redirect = '/'
+    template_details = 'choicapp/workshop_description.html'
+    object_name = 'value_id'
+
+    def get(self, request, *args, **kwargs):
+        if self.object_name in kwargs.keys():
+            instance = get_object_or_404(self.model,
+                                         pk=kwargs[self.object_name])
+            object_id = kwargs[self.object_name]
+        else:
+            instance = self.model()
+            object_id = []
+        if request.user.is_authenticated():
+            form = self.form_class(instance=instance)
+            return render(request, self.template_name,
+                          {'form': form, self.object_name: object_id})
+        else:
+            return redirect(self.template_redirect)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        if self.object_name in kwargs.keys():
+            instance = get_object_or_404(self.model,
+                                         pk=kwargs[self.object_name])
+            object_id = kwargs[self.object_name]
+        else:
+            instance = self.model()
+            object_id = []
+        form = self.form_class(request.POST, instance=instance)
+        if form.is_valid():
+            # <process form cleaned data>
+            try:
+                w = form.save()
+                w.save()
+                return redirect(self.template_redirect)
+            except:
+                pass
+        return render(request, self.template_name,
+                      {'form': form, self.object_name: object_id})

@@ -8,34 +8,55 @@
 {% block content %}
  
  <div class="container"> 
-        <div class="row">
-            <!-- Blog Entries Column -->
-            <div class="col-md-12">
-            	<h1 class="page-header">
-                    Nos valeurs
-                </h1>
-                Il te reste {{ request.user.voter.value_pts }} points à répartir parmis ces valeurs.
-                {% for value, is_up_votable, is_down_votable in values %}
-                    <hr>
-                    <h2>
-                        <a href="#"> {{ value.description }}</a>
-                    </h2>
-                    <p align='right'> 
-                    {% if is_down_votable %}
-                        <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
-                    {% else %}
-                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
-                    {% endif %}
-                    {% if is_up_votable %}
-                        <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
-                    {% else %}
-                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
-                    {% endif %}
-                   </p>
-                    <p>Points = {{ value.points }}</p>                               
-                {% endfor %}
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+        	<h1 class="page-header">
+                Nos valeurs
+            </h1>
         </div>
+        <!-- /.row -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% for value, is_up_votable, is_down_votable in values %}
+                <hr>
+                <h2>
+                    <a href="#"> {{ value.description }}</a>
+                </h2>
+                <br>
+                {{ value.definition }}
+                <p align='right'> 
+                {% if is_down_votable %}
+                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                {% else %}
+                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
+                {% endif %}
+                {% if is_up_votable %}
+                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                {% else %}
+                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
+                {% endif %}
+               </p>
+                <p>Points = {{ value.points }}</p>                               
+            {% endfor %}
+        </div>
+    </div>
+    <hr> 
+    <div class="row">
+        <div class="col-lg-12 ">
+            {% if user.is_authenticated %}
+                <input type="button" class="btn btn-warning" onclick="location.href='{% url 'choicapp:add_value' %}';" value="Proposer une valeur" />
+            {% endif %}
+        </div>
+    </div>
+</div> 
+
+
         <!-- /.row -->
     </div>
 {% endblock content %}

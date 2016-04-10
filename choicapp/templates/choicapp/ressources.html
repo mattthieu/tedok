@@ -14,41 +14,6 @@
                     List of things
                     <small>to absorb</small>
                 </h1>
-
-                {% for ressource, is_up_votable, is_down_votable in ressources %}
-                    <hr>
-
-                    <!-- Second Blog Post -->
-                    <h2>
-                        <a href="#"> {{ ressource.description }}</a>
-                    </h2>
-                    <p align='right'> 
-                    {% if is_down_votable %}
-                        <a class="btn btn-primary" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
-                    {% else %}
-                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
-                    {% endif %}
-                    {% if is_up_votable %}
-                        <a class="btn btn-primary" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
-                    {% else %}
-                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
-                    {% endif %}
-                   </p>
-                    <p>Visibility = {{ ressource.visibility }}</p>                               
-                {% endfor %}
-                <hr>
-
-                <hr>
-
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="previous">
-                        <a href="#">&larr; Older</a>
-                    </li>
-                    <li class="next">
-                        <a href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
             </div>
         </div>
         <!-- /.row -->

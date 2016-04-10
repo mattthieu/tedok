@@ -14,34 +14,6 @@
                     List of things
                     <small>to decide</small>
                 </h1>
-
-                {% for proposition in propositions %}
-                    <hr>
-
-                    <!-- Second Blog Post -->
-                    <h2>
-                        <a href="#"> {{ proposition.description }}</a>
-                    </h2>
-                    <p>Visibility = {{ proposition.visibility }}</p>
-                    {% if proposition.link %}
-                        <p>{{ proposition.link }}</p>
-                    {% endif %}
-                    <a class="btn btn-primary" href="#">Details <span class="glyphicon glyphicon-chevron-right"></span></a>                
-
-                {% endfor %}
-                <hr>
-
-                <hr>
-
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="previous">
-                        <a href="#">&larr; Older</a>
-                    </li>
-                    <li class="next">
-                        <a href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
         </div>
         <!-- /.row -->
     </div>

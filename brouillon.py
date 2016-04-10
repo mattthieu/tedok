@@ -18,3 +18,5 @@ i1 = Item_Voted(voter=v1, item=val1)
 i1.save()
 i2 = Item_Voted(voter=v2, item=val1)
 i2.save()
+
+v1.item_voted_set.get(item=val1)

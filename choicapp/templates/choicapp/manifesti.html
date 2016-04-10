@@ -11,8 +11,28 @@
             <!-- Blog Entries Column -->
             <div class="col-md-12">
             	<h1 class="page-header">
-                    Let us think about it...
+                    Nos valeurs
                 </h1>
+
+                {% for value, is_up_votable, is_down_votable in values %}
+                    <hr>
+                    <h2>
+                        <a href="#"> {{ value.description }}</a>
+                    </h2>
+                    <p align='right'> 
+                    {% if is_down_votable %}
+                        <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id voter.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                    {% else %}
+                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
+                    {% endif %}
+                    {% if is_up_votable %}
+                        <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id voter.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                    {% else %}
+                        <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
+                    {% endif %}
+                   </p>
+                    <p>Visibility = {{ value.visibility }}</p>                               
+                {% endfor %}
             </div>
         </div>
         <!-- /.row -->

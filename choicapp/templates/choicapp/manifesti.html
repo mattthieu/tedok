@@ -13,7 +13,7 @@
         	<h1 class="page-header">
                 Nos valeurs
             </h1>
-        </div>
+        </div> -
         <!-- /.row -->
     </div>
     <div class="row">
@@ -26,11 +26,15 @@
             {% for value, is_up_votable, is_down_votable in values %}
                 <hr>
                 <h2>
-                    <a href="#"> {{ value.description }}</a>
+                    {{ value.description }}
                 </h2>
+                <p align='right'> 
+                    {{ value.points }}
+                </p> 
                 <br>
                 {{ value.definition }}
                 <p align='right'> 
+                    <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
                 {% if is_down_votable %}
                     <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
                 {% else %}
@@ -42,7 +46,6 @@
                     <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
                 {% endif %}
                </p>
-                <p>Points = {{ value.points }}</p>                               
             {% endfor %}
         </div>
     </div>

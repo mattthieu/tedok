@@ -18,42 +18,60 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
+            {% if user.is_authenticated %}
+                Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
+            {% else %}
+                Connecte toi pour voter!
+            {% endif %}
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            {% for value, is_up_votable, is_down_votable in values %}
-                <hr>
-                <h2>
-                    {{ value.description }}
-                </h2>
-                <p align='right'> 
-                    {{ value.points }}
-                </p> 
-                <br>
-                {{ value.definition }}
-                <p align='right'> 
-                    <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
-                {% if is_down_votable %}
-                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
-                {% else %}
-                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
-                {% endif %}
-                {% if is_up_votable %}
-                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
-                {% else %}
-                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
-                {% endif %}
-               </p>
-            {% endfor %}
+    {% for value, is_up_votable, is_down_votable, points in values %}
+        <div class="row mt centered">
+            <div class="col-md-6 col-lg-offset-3">
+                 <table class="table">
+                    <tbody>
+                        <tr>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th><font class="text-primary" size="5">{{ points }}</font> pts </th> 
+                                        <th>
+                                        <p align='center'>
+                                        <font size="5">{{ value.description }}</font></th>
+                                        </p>
+                                        <th>       
+                                            <p align='right'>           
+                                                <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                                {% if is_down_votable %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
+                                                {% endif %}
+                                                {% if is_up_votable %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
+                                                {% endif %}
+                                            </p>                        
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <tr>
+                            <b>Definition:</b> {{ value.definition }}            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    {% endfor %}
     <hr> 
     <div class="row">
         <div class="col-lg-12 ">
             {% if user.is_authenticated %}
+                <p align='center'>
                 <input type="button" class="btn btn-warning" onclick="location.href='{% url 'choicapp:add_value' %}';" value="Proposer une valeur" />
+                </p>
             {% endif %}
         </div>
     </div>

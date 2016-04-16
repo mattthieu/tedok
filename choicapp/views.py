@@ -27,9 +27,9 @@ def show_manifesti(request):
                     is_down_votable = True
             except:
                 pass
-        values.append((value, is_up_votable, is_down_votable))
-    context['values'] = values
-    print(values)
+        values.append((value, is_up_votable, is_down_votable, value.points))
+    sorted_values = sorted(values, key=lambda tup: tup[3], reverse=True)
+    context['values'] = sorted_values
     return render(request, 'choicapp/manifesti.html', context=context)
 
 

@@ -43,9 +43,12 @@ def show_ressources(request):
 def show_logbook(request, *args, **kwargs):
     context = {}
     posts = []
-    date_max = max([post.date for post in LogBookPost.objects.all()])
+    try:
+        max_date = max([post.date for post in LogBookPost.objects.all()])
+    except:
+        max_date = date(2004, 3, 28)
     for post in LogBookPost.objects.all():
-        if post.date == date_max:
+        if post.date == max_date:
             editable = True
         else:
             editable = False
@@ -196,7 +199,10 @@ class AddLogBookPost(View):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         # precompute the most recent date among other blog posts
-        max_date = max([post.date for post in LogBookPost.objects.all()])
+        try:
+            max_date = max([post.date for post in LogBookPost.objects.all()])
+        except:
+            max_date = date(2004, 3, 28)
         if self.object_name in kwargs.keys():
             instance = get_object_or_404(self.model,
                                          pk=kwargs[self.object_name])
@@ -210,7 +216,8 @@ class AddLogBookPost(View):
             object_id = []
         # Cannot add another blog post when another was opened the same day
         if date.today() == max_date:
-            messages.error(request, 'You cannot post the same day!')
+            messages.error(request, 'You cannot post twice the same day.\
+                                     Please edit the most recent post.')
             return redirect(self.template_redirect)
         form = self.form_class(request.POST, instance=instance)
         if form.is_valid():

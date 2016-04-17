@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from choicapp.models import Value, Voter, Item_Voted
-from choicapp.forms import ValueForm
+from choicapp.models import Value, Item_Voted, LogBookPost
+from choicapp.forms import ValueForm, LogBookPostForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from datetime import date
 
 
 def index(request):
@@ -40,6 +41,15 @@ def show_ressources(request):
 
 def show_logbook(request):
     context = {}
+    posts = []
+    date_max = max([post.date for post in LogBookPost.objects.all()])
+    for post in LogBookPost.objects.all():
+        if post.date == date_max:
+            editable = True
+        else:
+            editable = False
+        posts.append((post, editable))
+    context = {'posts': posts}
     return render(request, 'choicapp/logbook.html', context=context)
 
 
@@ -150,6 +160,58 @@ class AddValue(View):
             # <process form cleaned data>
             try:
                 w = form.save()
+                w.save()
+                return redirect(self.template_redirect)
+            except:
+                pass
+        return render(request, self.template_name,
+                      {'form': form, self.object_name: object_id})
+
+
+class AddLogBookPost(View):
+    '''class based view to add/edit a logbook post.'''
+    form_class = LogBookPostForm
+    model = LogBookPost
+    template_name = 'choicapp/add_logbook_post.html'
+    template_redirect = '/logbook'
+    template_details = 'choicapp/workshop_description.html'
+    object_name = 'logbookpost_id'
+
+    def get(self, request, *args, **kwargs):
+        if self.object_name in kwargs.keys():
+            instance = get_object_or_404(self.model,
+                                         pk=kwargs[self.object_name])
+            object_id = kwargs[self.object_name]
+        else:
+            instance = self.model()
+            object_id = []
+        if request.user.is_authenticated():
+            form = self.form_class(instance=instance)
+            return render(request, self.template_name,
+                          {'form': form, self.object_name: object_id})
+        else:
+            return redirect(self.template_redirect)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        if self.object_name in kwargs.keys():
+            instance = get_object_or_404(self.model,
+                                         pk=kwargs[self.object_name])
+            object_id = kwargs[self.object_name]
+            # make sure blog post is not too old
+            # old posts are not editable
+            max_date = max([post.date for post in LogBookPost.objects.all()])
+            if instance.date < max_date:
+                return redirect(self.template_redirect)
+        else:
+            instance = self.model()
+            object_id = []
+        form = self.form_class(request.POST, instance=instance)
+        if form.is_valid():
+            # <process form cleaned data>
+            try:
+                w = form.save(commit=False)
+                w.date = date.today()
                 w.save()
                 return redirect(self.template_redirect)
             except:

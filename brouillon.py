@@ -26,5 +26,6 @@ v1.item_voted_set.get(item=val1)
 
 
 #################
-
+from choicapp.models import LogBookPost
+LogBookPost(content='old', date='2016.01.01')
 

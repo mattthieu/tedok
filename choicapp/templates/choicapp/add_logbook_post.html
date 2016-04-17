@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+ <div class="container"> 
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-12">
+            <h1 class="page-header">
+                Rajoute un article au journal de bord.
+            </h1>
+            {% if value_id %}
+                <form action="{% url 'choicapp:edit_logbookpost' logbookpost_id %}" method="post">{% csrf_token %}
+            {% else %}
+                <form action="{% url 'choicapp:add_logbookpost' %}" method="post">{% csrf_token %}
+            {% endif %}
+                {{ form.as_p }}
+                <input type="submit" value="Enregistrer"/>
+                </form>
+        </div>      
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

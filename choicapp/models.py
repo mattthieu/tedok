@@ -23,3 +23,8 @@ class Item_Voted(models.Model):
 
     class Meta:
             unique_together = ('item', 'voter')
+
+
+class LogBookPost(models.Model):
+    date = models.DateField()
+    content = models.TextField()

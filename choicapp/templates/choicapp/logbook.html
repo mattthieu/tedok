@@ -11,9 +11,32 @@
             <!-- Blog Entries Column -->
             <div class="col-md-12">
             <h1 class="page-header">
-                    Let us think about it...
+                    Résumés de nos discussions Tedøk?
                 </h1>
             </div>
+        </div>
+        {% for post, editable in posts %}
+        <div class="row">
+            <div class="col-md-12">
+            <font class="text-primary" size="5">{{ post.date }}</font>
+            {% if editable %}
+                <a class="btn btn-secondary" href="{% url 'choicapp:edit_logbookpost' post.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
+            {% endif %}
+            <p>
+                {{ post.content }}
+            </p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+        <div class="row">
+            <div class="col-lg-12 ">
+            {% if user.is_authenticated %}
+                <p align='center'>
+                <input type="button" class="btn btn-warning" onclick="location.href='{% url 'choicapp:add_logbookpost' %}';" value="Ajouter un résumé." />
+                </p>
+            {% endif %}
+        </div>
         </div>
         <!-- /.row -->
     </div>

@@ -203,6 +203,7 @@ class AddLogBookPost(View):
             max_date = max([post.date for post in LogBookPost.objects.all()])
         except:
             max_date = date(2004, 3, 28)
+
         if self.object_name in kwargs.keys():
             instance = get_object_or_404(self.model,
                                          pk=kwargs[self.object_name])
@@ -214,11 +215,11 @@ class AddLogBookPost(View):
         else:
             instance = self.model()
             object_id = []
-        # Cannot add another blog post when another was opened the same day
-        if date.today() == max_date:
-            messages.error(request, 'You cannot post twice the same day.\
-                                     Please edit the most recent post.')
-            return redirect(self.template_redirect)
+            # Cannot add another blog post when another was opened the same day
+            if date.today() == max_date:
+                messages.error(request, 'You cannot post twice the same day.\
+                                         Please edit the most recent post.')
+                return redirect(self.template_redirect)
         form = self.form_class(request.POST, instance=instance)
         if form.is_valid():
             # <process form cleaned data>

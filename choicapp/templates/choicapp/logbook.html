@@ -8,6 +8,13 @@
 {% block content %}
  <div class="container"> 
         <div class="row">
+            {% if messages %}
+            <br><br>
+            {% for message in messages %}
+                <font color="red">{{ message }}</font><br>
+            {% endfor %}
+            </ul>
+            {% endif %}
             <!-- Blog Entries Column -->
             <div class="col-md-12">
             <h1 class="page-header">

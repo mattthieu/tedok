@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from datetime import date
+from django.contrib import messages 
 
 
 def index(request):
@@ -39,7 +40,7 @@ def show_ressources(request):
     return render(request, 'choicapp/ressources.html', context=context)
 
 
-def show_logbook(request):
+def show_logbook(request, *args, **kwargs):
     context = {}
     posts = []
     date_max = max([post.date for post in LogBookPost.objects.all()])
@@ -194,18 +195,23 @@ class AddLogBookPost(View):
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
+        # precompute the most recent date among other blog posts
+        max_date = max([post.date for post in LogBookPost.objects.all()])
         if self.object_name in kwargs.keys():
             instance = get_object_or_404(self.model,
                                          pk=kwargs[self.object_name])
             object_id = kwargs[self.object_name]
             # make sure blog post is not too old
             # old posts are not editable
-            max_date = max([post.date for post in LogBookPost.objects.all()])
             if instance.date < max_date:
                 return redirect(self.template_redirect)
         else:
             instance = self.model()
             object_id = []
+        # Cannot add another blog post when another was opened the same day
+        if date.today() == max_date:
+            messages.error(request, 'You cannot post the same day!')
+            return redirect(self.template_redirect)
         form = self.form_class(request.POST, instance=instance)
         if form.is_valid():
             # <process form cleaned data>

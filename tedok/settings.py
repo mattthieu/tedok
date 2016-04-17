@@ -31,6 +31,7 @@ if type_dev == 'dev':
     DEBUG = True
 else:
     DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 

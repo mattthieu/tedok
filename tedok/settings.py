@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'choicapp',
 ]
 
@@ -149,3 +150,4 @@ STATICFILES_DIRS = (
 if type_dev == 'prod':
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

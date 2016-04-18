@@ -13,7 +13,7 @@
             <h1 class="page-header">
                 Rajoute un article au journal de bord.
             </h1>
-            {% if value_id %}
+            {% if logbookpost_id %}
                 <form action="{% url 'choicapp:edit_logbookpost' logbookpost_id %}" method="post">{% csrf_token %}
             {% else %}
                 <form action="{% url 'choicapp:add_logbookpost' %}" method="post">{% csrf_token %}

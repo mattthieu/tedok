@@ -30,7 +30,7 @@
                 <a class="btn btn-secondary" href="{% url 'choicapp:edit_logbookpost' post.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}
             <p>
-                {{ post.content }}
+                {{ post.content|linebreaks }}
             </p>
             </div>
         </div>

@@ -131,7 +131,7 @@ class AddValue(View):
     form_class = ValueForm
     model = Value
     template_name = 'choicapp/add_value.html'
-    template_redirect = '/'
+    template_redirect = '/manifesti'
     template_details = 'choicapp/workshop_description.html'
     object_name = 'value_id'
 

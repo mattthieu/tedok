@@ -11,14 +11,14 @@
             <!-- Blog Entries Column -->
             <div class="col-md-12">
                 <h1 class="page-header">
-                    Log in
+                    Connecte toi
                 </h1>
 
                {% if error %}
-                    <p><strong>Unknown user or bad password.</strong></p>
+                    <p><strong>Utilisateur inconnu ou mauvais password.</strong></p>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    You are connected, {{ user.username }} !
+                    Tu es maintenant connecté, {{ user.username }} !
                 {% else %}
                     <form action="{% url 'choicapp:login' %}" method="post" action=".">{% csrf_token %}
                         {{ form.as_p }}

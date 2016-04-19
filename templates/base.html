@@ -59,10 +59,9 @@ Journal de bord<!DOCTYPE html>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'choicapp:index' %}"> Hi {{ user.username }}</a></li>
-                    <li><a href="{% url 'choicapp:logout' %}">Log out</a></li>
+                    <li><a href="{% url 'choicapp:logout' %}">Deconnection {{ user.username }}</a></li>
                 {% else %}
-                    <li><a href="{% url 'choicapp:login' %}">Log in</a></li>
+                    <li><a href="{% url 'choicapp:login' %}">Connection</a></li>
                 {% endif %}
               </ul>
             </div>

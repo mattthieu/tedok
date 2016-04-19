@@ -225,7 +225,10 @@ class AddLogBookPost(View):
             # <process form cleaned data>
             try:
                 w = form.save(commit=False)
-                w.date = date.today()
+                # check that we are not modifying an existing post
+                # if we create from scratch, then set the date to toda
+                if self.object_name in kwargs.keys():
+                    w.date = date.today()
                 w.save()
                 return redirect(self.template_redirect)
             except:

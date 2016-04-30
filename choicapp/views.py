@@ -40,6 +40,11 @@ def show_ressources(request):
     return render(request, 'choicapp/ressources.html', context=context)
 
 
+def show_glossary(request):
+    context = {}
+    return render(request, 'choicapp/glossary.html', context=context)
+
+
 def show_logbook(request, *args, **kwargs):
     context = {}
     posts = []

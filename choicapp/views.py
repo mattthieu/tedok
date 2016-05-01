@@ -22,15 +22,19 @@ def show_manifesti(request):
     for value in Value.objects.all():
         is_up_votable = False
         is_down_votable = False
+        nb_votes = 0
         if request.user.is_authenticated():
-            try:
-                if request.user.voter.value_pts > 0:
+            if request.user.voter.value_pts > 0:
                     is_up_votable = True
-                if len(request.user.voter.item_voted_set.filter(item=value)):
+            try:
+                nb_votes = request.user.voter.item_voted_set\
+                    .get(item=value).points_given
+                if nb_votes:
                     is_down_votable = True
             except:
                 pass
-        values.append((value, is_up_votable, is_down_votable, value.points))
+        values.append((value, is_up_votable, is_down_votable,
+                       value.points, nb_votes))
     sorted_values = sorted(values, key=lambda tup: tup[3], reverse=True)
     context['values'] = sorted_values
     return render(request, 'choicapp/manifesti.html', context=context)

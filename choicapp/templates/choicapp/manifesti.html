@@ -17,15 +17,17 @@
         <!-- /.row -->
     </div>
     <div class="row">
-        <div class="col-md-12">
-            {% if user.is_authenticated %}
-                Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
-            {% else %}
-                Connecte toi pour voter!
-            {% endif %}
+        <div class="col-md-6 col-lg-offset-3">
+            <p align='center'>
+                {% if user.is_authenticated %}
+                    Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
+                {% else %}
+                    Connecte toi pour voter!
+                {% endif %}
+            </p>
         </div>
     </div>
-    {% for value, is_up_votable, is_down_votable, points in values %}
+    {% for value, is_up_votable, is_down_votable, points, points_from_user in values %}
         <div class="row mt centered">
             <div class="col-md-6 col-lg-offset-3">
                  <table class="table">
@@ -34,11 +36,16 @@
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th><font class="text-primary" size="5">{{ points }}</font> pts </th> 
+                                        <th><font class="text-primary" size="5">{{ points }}</font> pts
+                                        {% if user.is_authenticated %}
+                                            <font class="text-secondary" size="3">({{ points_from_user }})</font>
+                                        {% endif %}
+                                        </th> 
                                         <th>
                                         <p align='center'>
-                                        <font size="5">{{ value.description }}</font></th>
+                                        <font size="5">{{ value.description }}</font>
                                         </p>
+                                        </th>
                                         <th>       
                                             <p align='right'>           
                                                 <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>

@@ -4,19 +4,11 @@
 {% load markdown_filter %}
 
 {% block header %}
+       Liste de notions
+       <small>à explorer</small>
 {% endblock header %}
 
 {% block content %}
- <div class="container"> 
-        <div class="row">
-            <!-- Blog Entries Column -->
-            <div class="col-md-12">
-                <h1 class="page-header">
-                    Liste de notions
-                    <small>à explorer</small>
-                </h1>
-            </div>
-        </div>
         {% for word in words %}
         <div class="row">
             <div class="col-md-12">
@@ -39,7 +31,6 @@
         </div>
         </div>
         <!-- /.row -->
-    </div>
 {% endblock content %}
 
 {% block scripts %}

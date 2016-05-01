@@ -3,16 +3,13 @@
 {% load staticfiles %}
 
 {% block header %}
+      Rajoute une valeur
 {% endblock header %}
 
 {% block content %}
- <div class="container"> 
     <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-12">
-            <h1 class="page-header">
-                Rajoute une valeur
-            </h1>
             {% if value_id %}
                 <form action="{% url 'choicapp:edit_value' value_id %}" method="post">{% csrf_token %}
             {% else %}
@@ -23,7 +20,6 @@
                 </form>
         </div>      
     </div>
-</div>
 
 {% endblock content %}
 

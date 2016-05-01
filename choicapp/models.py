@@ -9,7 +9,7 @@ class Voter(models.Model):
 
 
 class Item(models.Model):
-    description = models.CharField(max_length=500)
+    title = models.CharField(max_length=500)
     points = models.IntegerField(default=0)
 
 
@@ -37,3 +37,9 @@ class Glossary_Word(models.Model):
 
     def get_absolute_url(self):
         return reverse('choicapp:glossary')
+
+
+class Proposition(Item):
+    description = models.TextField()
+    deadline = models.DateTimeField()
+

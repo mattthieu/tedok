@@ -71,16 +71,24 @@ Journal de bord<!DOCTYPE html>
     </nav>
 
     <br><br>
-
-    {% block header %}
-    {% endblock header %}
-
-    <!-- Page Content -->
-
-    {% block content %}
-    {% endblock content %}
-
-   
+ <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">
+                {% block header %}
+                {% endblock header %}
+            </h1>
+        </div> 
+        <!-- /.row -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Page Content -->
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+</div>
 
         
     {% block scripts %}

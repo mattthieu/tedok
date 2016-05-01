@@ -3,19 +3,11 @@
 {% load staticfiles %}
 
 {% block header %}
+Nos valeurs
 {% endblock header %}
 
 {% block content %}
  
- <div class="container"> 
-    <div class="row">
-        <div class="col-md-12">
-        	<h1 class="page-header">
-                Nos valeurs
-            </h1>
-        </div> -
-        <!-- /.row -->
-    </div>
     <div class="row">
         <div class="col-md-12">
             {% if user.is_authenticated %}
@@ -75,11 +67,8 @@
             {% endif %}
         </div>
     </div>
-</div> 
 
 
-        <!-- /.row -->
-    </div>
 {% endblock content %}
 
 {% block scripts %}

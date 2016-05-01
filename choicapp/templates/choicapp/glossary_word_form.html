@@ -3,16 +3,13 @@
 {% load staticfiles %}
 
 {% block header %}
+     Editer notions
 {% endblock header %}
 
 {% block content %}
- <div class="container"> 
         <div class="row">
             <!-- Blog Entries Column -->
             <div class="col-md-12">
-                <h1 class="page-header">
-                    Editer notions
-                </h1>
                 <form action="" method="post">{% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" value="Update" />
@@ -20,7 +17,6 @@
             </div>
         </div>
         <!-- /.row -->
-    </div>
 {% endblock content %}
 
 {% block scripts %}

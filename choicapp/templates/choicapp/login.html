@@ -3,17 +3,13 @@
 {% load staticfiles %}
 
 {% block header %}
+    Connecte toi
 {% endblock header %}
 
 {% block content %}
- <div class="container"> 
         <div class="row">
             <!-- Blog Entries Column -->
             <div class="col-md-12">
-                <h1 class="page-header">
-                    Connecte toi
-                </h1>
-
                {% if error %}
                     <p><strong>Utilisateur inconnu ou mauvais password.</strong></p>
                 {% endif %}
@@ -28,7 +24,6 @@
                 {% endif %}
             </div>
         </div><!-- /row -->
-    </div><!-- /container -->
     
 {% endblock content %}
 

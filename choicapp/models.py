@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 class Voter(models.Model):
@@ -28,3 +29,11 @@ class Item_Voted(models.Model):
 class LogBookPost(models.Model):
     date = models.DateField()
     content = models.TextField()
+
+
+class Glossary_Word(models.Model):
+    word = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def get_absolute_url(self):
+        return reverse('choicapp:glossary')

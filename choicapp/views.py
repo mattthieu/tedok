@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from choicapp.models import Value, Item_Voted, LogBookPost
+from choicapp.models import Value, Item_Voted, LogBookPost, Glossary_Word
 from choicapp.forms import ValueForm, LogBookPostForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from datetime import date
 from django.contrib import messages 
+from django.views.generic.edit import CreateView, UpdateView
 
 
 def index(request):
@@ -40,8 +41,22 @@ def show_ressources(request):
     return render(request, 'choicapp/ressources.html', context=context)
 
 
+class GlossaryWordCreate(CreateView):
+    model = Glossary_Word
+    fields = '__all__'
+    template_name_suffix = '_form'
+
+
+class GlossaryWordUpdate(UpdateView):
+    model = Glossary_Word
+    fields = '__all__'
+    template_name_suffix = '_form'
+
+
 def show_glossary(request):
     context = {}
+    words = Glossary_Word.objects.all()
+    context['words'] = words
     return render(request, 'choicapp/glossary.html', context=context)
 
 

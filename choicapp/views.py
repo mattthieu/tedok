@@ -1,5 +1,7 @@
+from django import forms
 from django.shortcuts import render, redirect, get_object_or_404
 from choicapp.models import Value, Item_Voted, LogBookPost, Glossary_Word
+from choicapp.models import Proposition
 from choicapp.forms import ValueForm, LogBookPostForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from datetime import date
-from django.contrib import messages 
+from django.contrib import messages
 from django.views.generic.edit import CreateView, UpdateView
 
 
@@ -82,7 +84,7 @@ def show_logbook(request, *args, **kwargs):
 
 
 def show_propositions(request):
-    context = {}
+    context = {'propositions': Proposition.objects.all()}
     return render(request, 'choicapp/propositions.html', context=context)
 
 
@@ -156,7 +158,6 @@ class AddValue(View):
     model = Value
     template_name = 'choicapp/add_value.html'
     template_redirect = '/manifesti'
-    template_details = 'choicapp/workshop_description.html'
     object_name = 'value_id'
 
     def get(self, request, *args, **kwargs):
@@ -202,7 +203,6 @@ class AddLogBookPost(View):
     model = LogBookPost
     template_name = 'choicapp/add_logbook_post.html'
     template_redirect = '/logbook'
-    template_details = 'choicapp/workshop_description.html'
     object_name = 'logbookpost_id'
 
     def get(self, request, *args, **kwargs):
@@ -259,3 +259,15 @@ class AddLogBookPost(View):
                 pass
         return render(request, self.template_name,
                       {'form': form, self.object_name: object_id})
+
+
+class PropositionCreate(CreateView):
+    model = Proposition
+    fields = ['title', 'description', 'deadline']
+    template_name_suffix = '_form'
+
+
+class PropositionUpdate(UpdateView):
+    model = Proposition
+    fields = ['title', 'description', 'deadline']
+    template_name_suffix = '_form'

@@ -41,5 +41,7 @@ class Glossary_Word(models.Model):
 
 class Proposition(Item):
     description = models.TextField()
-    deadline = models.DateTimeField()
+    deadline = models.DateField()
 
+    def get_absolute_url(self):
+        return reverse('choicapp:proposition')

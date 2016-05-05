@@ -126,7 +126,7 @@ def up_value(request, *args, **kwargs):
         voter.save()
         value.points += 1
         value.save()
-    return redirect('/manifesti')
+    return redirect('/manifesti#value_' + str(kwargs['value_id']))
 
 
 @login_required

@@ -19,7 +19,7 @@ Nos valeurs
             </p>
         </div>
     </div>
-    {% for value, is_up_votable, is_down_votable, points, points_from_user in values %}
+    {% for value, is_up_votable, is_down_votable, is_big_up_votable, is_big_down_votable, points, points_from_user in values %}
         <div class="row mt centered">
             <div class="col-md-6 col-lg-offset-3">
                  <table class="table">
@@ -28,7 +28,7 @@ Nos valeurs
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th><p style="position:relative;"><a name="value_{{ value.id }}" style="position:absolute; top:-70px;"></a>
+                                        <th><p style="position:relative;"><a name="{{ value.id }}" style="position:absolute; top:-70px;"></a>
                                         <font class="text-primary" size="5">{{ points }}</font>pts
                                         {% if user.is_authenticated %}
                                             <font class="text-secondary" size="3">({{ points_from_user }})</font>
@@ -43,14 +43,26 @@ Nos valeurs
                                             <p align='right'>           
                                                 <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
                                                 {% if is_down_votable %}
-                                                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id 1 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
                                                 {% endif %}
                                                 {% if is_up_votable %}
-                                                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id 1 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
+                                                {% endif %}
+                                            </p>
+                                            <p align='right'>
+                                                {% if is_big_down_votable %}
+                                                    <a class="btn btn-warning" href="{% url 'choicapp:down_value' value.id 10 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-warning disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
+                                                {% endif %}
+                                                {% if is_big_up_votable %}
+                                                    <a class="btn btn-warning" href="{% url 'choicapp:up_value' value.id 10 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-warning disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
                                                 {% endif %}
                                             </p>                        
                                         </th>

@@ -22,20 +22,27 @@ def show_manifesti(request):
     for value in Value.objects.all():
         is_up_votable = False
         is_down_votable = False
+        is_big_up_votable = False
+        is_big_down_votable = False
         nb_votes = 0
         if request.user.is_authenticated():
             if request.user.voter.value_pts > 0:
                     is_up_votable = True
+            if request.user.voter.value_pts > 9:
+                    is_big_up_votable = True
             try:
                 nb_votes = request.user.voter.item_voted_set\
                     .get(item=value).points_given
-                if nb_votes:
+                if nb_votes > 0:
                     is_down_votable = True
+                if nb_votes > 9:
+                    is_big_down_votable = True
             except:
                 pass
         values.append((value, is_up_votable, is_down_votable,
+                       is_big_up_votable, is_big_down_votable,
                        value.points, nb_votes))
-    sorted_values = sorted(values, key=lambda tup: tup[3], reverse=True)
+    sorted_values = sorted(values, key=lambda tup: tup[-2], reverse=True)
     context['values'] = sorted_values
     return render(request, 'choicapp/manifesti.html', context=context)
 
@@ -113,41 +120,44 @@ def logout_user(request):
 @login_required
 def up_value(request, *args, **kwargs):
     value = Value.objects.get(pk=kwargs['value_id'])
+    nb_votes = int(kwargs['nb_votes'])
     voter = request.user.voter
     # make sure the user still has some points
-    if request.user.voter.value_pts > 0:
+    if request.user.voter.value_pts >= nb_votes:
         try:
             i = Item_Voted.objects.get(voter=voter, item=value)
         except:
             i = Item_Voted(item=value, voter=voter)
-        i.points_given += 1
+        i.points_given += nb_votes
         i.save()
-        voter.value_pts += -1
+        voter.value_pts += -nb_votes
         voter.save()
-        value.points += 1
+        value.points += nb_votes
         value.save()
-    return redirect('/manifesti#value_' + str(kwargs['value_id']))
+    return redirect('/manifesti#' + str(kwargs['value_id']))
 
 
 @login_required
 def down_value(request, *args, **kwargs):
     value = Value.objects.get(pk=kwargs['value_id'])
+    nb_votes = int(kwargs['nb_votes'])
     voter = request.user.voter
     # make sure the user has already voted
     try:
         i = Item_Voted.objects.get(voter=voter, item=value)
-        i.points_given += -1
-        i.save()
-        voter.value_pts += +1
-        voter.save()
-        value.points += -1
-        value.save()
+        if i.points_given >= nb_votes:
+            i.points_given += -nb_votes
+            i.save()
+            voter.value_pts += +nb_votes
+            voter.save()
+            value.points += -nb_votes
+            value.save()
     except:
         pass
     # Delete Item voted is no points left
     if i.points_given <= 0:
         i.delete()
-    return redirect('/manifesti')
+    return redirect('/manifesti#' + str(kwargs['value_id']))
 
 
 class AddValue(View):

@@ -28,7 +28,8 @@ Nos valeurs
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th><a name="value_{{ value.id }}"><font class="text-primary" size="5">{{ points }}</font></a> pts
+                                        <th><p style="position:relative;"><a name="value_{{ value.id }}" style="position:absolute; top:-70px;"></a>
+                                        <font class="text-primary" size="5">{{ points }}</font>pts
                                         {% if user.is_authenticated %}
                                             <font class="text-secondary" size="3">({{ points_from_user }})</font>
                                         {% endif %}

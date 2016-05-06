@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+{% load markdown_filter %}
 
 {% block header %}
     Liste de propositions
@@ -8,9 +9,30 @@
 {% endblock header %}
 
 {% block content %}
-    <div class="row">
-            <!-- Blog Entries Column -->
-    </div>
+
+        {% for proposition in propositions %}
+        <div class="row">
+            <div class="col-md-12">
+            <font class="text-primary" size="5">{{ proposition.title }}</font>
+            <a class="btn btn-secondary" href="{% url 'choicapp:edit_proposition' proposition.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
+            <p>
+                {{ proposition.description|markdownify|safe }}
+            </p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+        <div class="row">
+            <div class="col-lg-12 ">
+            {% if user.is_authenticated %}
+                <p align='center'>
+                <input type="button" class="btn btn-warning" onclick="location.href='{% url 'choicapp:add_proposition' %}';" value="Ajouter une proposition." />
+                </p>
+            {% endif %}
+           </div>
+        </div>
+        <!-- /.row -->
+
 {% endblock content %}
 
 {% block scripts %}

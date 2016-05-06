@@ -10,7 +10,7 @@
 
 {% block content %}
 
-        {% for proposition in propositions %}
+        {% for proposition, up_voted, down_voted, nb_up_votes, nb_down_votes in propositions %}
         <div class="row">
             <div class="col-md-12">
             <font class="text-primary" size="5">{{ proposition.title }}</font>

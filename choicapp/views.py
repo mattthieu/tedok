@@ -84,7 +84,33 @@ def show_logbook(request, *args, **kwargs):
 
 
 def show_propositions(request):
-    context = {'propositions': Proposition.objects.all()}
+    propositions = []
+    for proposition in Proposition.objects.all():
+        up_voted = False
+        down_voted = False
+        nb_up_votes = len(proposition.item_voted_set
+                          .filter(vote_given=1))
+        nb_down_votes = len(proposition.item_voted_set
+                            .filter(vote_given=-1))
+        if request.user.is_authenticated():
+            try:
+                i = proposition.item_voted_set.get(voter=request.user.voter)
+                if i.vote == 1:
+                    up_voted = True
+                    down_voted = False
+                elif i.vote == -1:
+                    up_voted = False
+                    down_voted = True
+            except:
+                up_voted = False
+                down_voted = False
+        propositions.append((proposition, up_voted, down_voted,
+                             nb_up_votes, nb_down_votes))
+    # sorted_propositions = sorted(propositions, key=lambda tup: tup[3],
+    #                                reverse=True)
+    # context['propositions'] = sorted_propositions
+    context = {}
+    context['propositions'] = propositions
     return render(request, 'choicapp/propositions.html', context=context)
 
 
@@ -150,6 +176,22 @@ def down_value(request, *args, **kwargs):
     if i.points_given <= 0:
         i.delete()
     return redirect('/manifesti')
+
+
+@login_required
+def updown_proposition(request, *args, **kwargs):
+    prop = Proposition.objects.get(pk=kwargs['proposition_id'])
+    vote = int(kwargs['vote'])
+    voter = request.user.voter
+    try:
+        i = Item_Voted.objects.get(voter=voter, item=prop)
+    except:
+        i = Item_Voted(item=prop, voter=voter)
+    # make sure the vote is not too big
+    if abs(vote) == 1:
+        i.votes_given = vote
+        i.save()
+    return redirect('/propositions')
 
 
 class AddValue(View):
@@ -271,3 +313,4 @@ class PropositionUpdate(UpdateView):
     model = Proposition
     fields = ['title', 'description', 'deadline']
     template_name_suffix = '_form'
+

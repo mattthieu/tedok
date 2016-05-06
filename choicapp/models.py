@@ -21,6 +21,7 @@ class Item_Voted(models.Model):
     item = models.ForeignKey(Item)
     voter = models.ForeignKey(Voter)
     points_given = models.IntegerField(default=0)
+    vote_given = models.IntegerField(default=0)
 
     class Meta:
             unique_together = ('item', 'voter')

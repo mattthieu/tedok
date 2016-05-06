@@ -86,8 +86,6 @@ def show_logbook(request, *args, **kwargs):
 def show_propositions(request):
     propositions = []
     for proposition in Proposition.objects.all():
-        up_voted = False
-        down_voted = False
         nb_up_votes = len(proposition.item_voted_set
                           .filter(vote_given=1))
         nb_down_votes = len(proposition.item_voted_set
@@ -95,12 +93,15 @@ def show_propositions(request):
         if request.user.is_authenticated():
             try:
                 i = proposition.item_voted_set.get(voter=request.user.voter)
-                if i.vote == 1:
+                if i.vote_given == 1:
                     up_voted = True
                     down_voted = False
-                elif i.vote == -1:
+                elif i.vote_given == -1:
                     up_voted = False
                     down_voted = True
+                else:
+                    up_voted = False
+                    down_voted = False
             except:
                 up_voted = False
                 down_voted = False
@@ -181,16 +182,21 @@ def down_value(request, *args, **kwargs):
 @login_required
 def updown_proposition(request, *args, **kwargs):
     prop = Proposition.objects.get(pk=kwargs['proposition_id'])
-    vote = int(kwargs['vote'])
+    print(kwargs)
+    if kwargs['vote'] == '1':
+        vote = 1
+    elif kwargs['vote'] == '0':
+        vote = -1
+    else:
+        redirect('/propositions')
     voter = request.user.voter
     try:
         i = Item_Voted.objects.get(voter=voter, item=prop)
     except:
         i = Item_Voted(item=prop, voter=voter)
-    # make sure the vote is not too big
-    if abs(vote) == 1:
-        i.votes_given = vote
-        i.save()
+    i.vote_given = vote
+    i.save()
+    print(i.vote_given)
     return redirect('/propositions')
 
 

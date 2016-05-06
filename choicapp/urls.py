@@ -24,7 +24,7 @@ urlpatterns = [
         views.PropositionCreate.as_view(), name='add_proposition'),
     url(r'^edit_proposition/(?P<pk>[0-9]+)/$',
         views.PropositionUpdate.as_view(), name='edit_proposition'),
-    url(r'^manifesti/updown_proposition/(?P<proposition_id>\d+)/' +
+    url(r'^updown_proposition/(?P<proposition_id>\d+)/' +
         '(?P<vote>\d+)/$',
         views.updown_proposition, name='updown_proposition'),
     url(r'^ressources$', views.show_ressources, name='ressources'),

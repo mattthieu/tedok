@@ -11,16 +11,48 @@
 {% block content %}
 
         {% for proposition, up_voted, down_voted, nb_up_votes, nb_down_votes in propositions %}
-        <div class="row">
-            <div class="col-md-12">
-            <font class="text-primary" size="5">{{ proposition.title }}</font>
-            <a class="btn btn-secondary" href="{% url 'choicapp:edit_proposition' proposition.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
-            <p>
-                {{ proposition.description|markdownify|safe }}
-            </p>
+         <div class="row mt centered">
+            <div class="col-md-10 col-lg-offset-1">
+                 <table class="table">
+                    <tbody>
+                        <tr>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th><p style="position:relative;"><a name="{{ proposition.id }}" style="position:absolute; top:-70px;"></a>
+                                        <font class="text-primary" size="5">{{ nb_up_votes }} <span class="glyphicon glyphicon-thumbs-up"></span> - {{ nb_down_votes }} <span class="glyphicon glyphicon-thumbs-down"></span></font>
+                                        <br> {{ proposition.deadline }}
+                                        </th> 
+                                        <th>
+                                        <p align='center'>
+                                        <font size="5">{{ proposition.title }}</font>
+                                        </p>
+                                        </th>
+                                        <th>       
+                                            <p align='right'>           
+                                                <a class="btn btn-secondary" href="{% url 'choicapp:edit_proposition' proposition.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                                {% if down_voted %}
+                                                    <a class="btn btn-info" href="{% url 'choicapp:updown_proposition' proposition.id 0 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:updown_proposition' proposition.id 0 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% endif %}
+                                                {% if up_voted %}
+                                                    <a class="btn btn-info" href="{% url 'choicapp:updown_proposition' proposition.id 1 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                {% else %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:updown_proposition' proposition.id 1 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
+                                                {% endif %}
+                                            </p>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <tr>
+                            <b>Description:</b><br> {{ proposition.description|markdownify|safe}}            
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <hr>
         {% endfor %}
         <div class="row">
             <div class="col-lg-12 ">

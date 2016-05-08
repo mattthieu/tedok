@@ -164,3 +164,4 @@ SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y')
+BIG_POINTS = 10  # the amount of points for largest votes

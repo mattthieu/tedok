@@ -5,16 +5,51 @@ from django.core.urlresolvers import reverse
 
 class Voter(models.Model):
     user = models.OneToOneField(User)
-    value_pts = models.IntegerField(default=100)
+    dokv = models.IntegerField(default=100)
+    dokp = models.IntegerField(default=0)
+
+    def get_doks(self, dok_type):
+        if dok_type == 'value':
+            return self.dokv
+        elif dok_type == 'proposition':
+            return self.dokp
+        else:
+            raise(ValueError, 'Unknown type of doks')
+
+    def set_doks(self, dok_type, amount):
+        if dok_type == 'value':
+            self.dokv = amount
+        elif dok_type == 'proposition':
+            self.dokp = amount
+        else:
+            raise(ValueError, 'Unknown type of doks')
 
 
 class Item(models.Model):
     title = models.CharField(max_length=500)
     points = models.IntegerField(default=0)
+    description = models.TextField(default='')
+
+    def get_type(self):
+        return 'item'
 
 
 class Value(Item):
-    definition = models.CharField(max_length=1000, blank=True, null=True)
+    def get_absolute_url(self):
+        return reverse('choicapp:manifesti')
+
+    def get_type(self):
+        return 'value'
+
+
+class Proposition(Item):
+    deadline = models.DateField(help_text='DD/MM/YYYY')
+
+    def get_absolute_url(self):
+        return reverse('choicapp:propositions')
+
+    def get_type(self):
+        return 'proposition'
 
 
 class Item_Voted(models.Model):
@@ -38,11 +73,3 @@ class Glossary_Word(models.Model):
 
     def get_absolute_url(self):
         return reverse('choicapp:glossary')
-
-
-class Proposition(Item):
-    description = models.TextField()
-    deadline = models.DateField(help_text='DD/MM/YYYY')
-
-    def get_absolute_url(self):
-        return reverse('choicapp:propositions')

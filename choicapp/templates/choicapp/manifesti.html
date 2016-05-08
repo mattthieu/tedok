@@ -13,14 +13,14 @@ Nos valeurs
         <div class="col-md-6 col-lg-offset-3">
             <p align='center'>
                 {% if user.is_authenticated %}
-                    Il te reste <b>{{ request.user.voter.value_pts }} points</b> à répartir parmis ces valeurs.
+                    Il te reste <b>{{ request.user.voter.dokv }} points</b> à répartir parmis ces valeurs.
                 {% else %}
                     Connecte toi pour voter!
                 {% endif %}
             </p>
         </div>
     </div>
-    {% for value, is_up_votable, is_down_votable, is_big_up_votable, is_big_down_votable, points, points_from_user in values %}
+    {% for value, is_up_pointable, is_down_pointable, is_big_up_pointable, is_big_down_pointable, points, points_from_user in values %}
         <div class="row mt centered">
             <div class="col-md-6 col-lg-offset-3">
                  <table class="table">
@@ -43,25 +43,25 @@ Nos valeurs
                                         <th>       
                                             <p align='right'>           
                                                 <a class="btn btn-secondary" href="{% url 'choicapp:edit_value' value.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
-                                                {% if is_down_votable %}
-                                                    <a class="btn btn-primary" href="{% url 'choicapp:down_value' value.id 1 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% if is_down_pointable %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:down_visibility' item_id=value.id nb_votes=1 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
                                                 {% endif %}
-                                                {% if is_up_votable %}
-                                                    <a class="btn btn-primary" href="{% url 'choicapp:up_value' value.id 1 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                {% if is_up_pointable %}
+                                                    <a class="btn btn-primary" href="{% url 'choicapp:up_visibility' value.id 1 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-primary disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
                                                 {% endif %}
                                             </p>
                                             <p align='right'>
-                                                {% if is_big_down_votable %}
-                                                    <a class="btn btn-warning" href="{% url 'choicapp:down_value' value.id 10 %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
+                                                {% if is_big_down_pointable %}
+                                                    <a class="btn btn-warning" href="{% url 'choicapp:down_visibility' value.id big_pts %}"> <span class="glyphicon glyphicon-thumbs-down"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-warning disabled" href="#"> <span class="glyphicon glyphicon-thumbs-down"></span></a> 
                                                 {% endif %}
-                                                {% if is_big_up_votable %}
-                                                    <a class="btn btn-warning" href="{% url 'choicapp:up_value' value.id 10 %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
+                                                {% if is_big_up_pointable %}
+                                                    <a class="btn btn-warning" href="{% url 'choicapp:up_visibility' value.id big_pts %}"> <span class="glyphicon glyphicon-thumbs-up"></span></a>
                                                 {% else %}
                                                     <a class="btn btn-warning disabled" href="#"> <span class="glyphicon glyphicon-thumbs-up"></span></a> 
                                                 {% endif %}
@@ -71,7 +71,7 @@ Nos valeurs
                                 </tbody>
                             </table>
                         <tr>
-                            <b>Definition:</b> {{ value.definition }}            
+                            <b>Definition:</b> {{ value.description }}            
                         </tr>
                     </tbody>
                 </table>

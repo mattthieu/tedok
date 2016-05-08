@@ -93,11 +93,30 @@ def show_logbook(request, *args, **kwargs):
 def show_propositions(request):
     propositions = []
     for proposition in Proposition.objects.all():
+        is_up_pointable = False
+        is_down_pointable = False
+        is_big_up_pointable = False
+        is_big_down_pointable = False
+        nb_points_from_user = 0
         nb_up_votes = len(proposition.item_voted_set
                           .filter(vote_given=1))
         nb_down_votes = len(proposition.item_voted_set
                             .filter(vote_given=-1))
+
         if request.user.is_authenticated():
+            if request.user.voter.value_pts > 0:
+                    is_up_pointable = True
+            if request.user.voter.value_pts > 9:
+                    is_big_up_pointable = True
+            try:
+                nb_points_from_user = request.user.voter.item_voted_set\
+                    .get(item=proposition).points_given
+                if nb_points_from_user > 0:
+                    is_down_pointable = True
+                if nb_points_from_user > 9:
+                    is_big_down_pointable = True
+            except:
+                pass
             try:
                 i = proposition.item_voted_set.get(voter=request.user.voter)
                 if i.vote_given == 1:
@@ -113,7 +132,10 @@ def show_propositions(request):
                 up_voted = False
                 down_voted = False
         propositions.append((proposition, up_voted, down_voted,
-                             nb_up_votes, nb_down_votes))
+                             nb_up_votes, nb_down_votes,
+                             is_up_pointable, is_down_pointable,
+                             is_big_up_pointable, is_big_down_pointable,
+                             nb_points_from_user))
     # sorted_propositions = sorted(propositions, key=lambda tup: tup[3],
     #                                reverse=True)
     # context['propositions'] = sorted_propositions
@@ -323,6 +345,11 @@ class PropositionCreate(CreateView):
     model = Proposition
     fields = ['title', 'description', 'deadline']
     template_name_suffix = '_form'
+
+    def get_form(self, form_class):
+        form = super(PropositionCreate, self).get_form(form_class)
+        form.fields['deadline'].input_format = 'settings.DATE_INPUT_FORMATS'
+        return form
 
 
 class PropositionUpdate(UpdateView):

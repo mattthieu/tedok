@@ -22,7 +22,11 @@ i2.save()
 v1.item_voted_set.get(item=val1)
 
 
-
+#################
+from choicapp.models import Voter
+for v in Voter.objects.all():
+    v.dokp = 100
+    v.save()
 
 
 #################

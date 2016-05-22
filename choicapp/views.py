@@ -115,6 +115,10 @@ def show_propositions(request):
         nb_down_votes = len(proposition.item_voted_set
                             .filter(vote_given=-1))
 
+        # default values
+        up_voted = False
+        down_voted = False
+        # if user is authenticated then set personnalized details
         if request.user.is_authenticated():
             try:
                 i = proposition.item_voted_set.get(voter=request.user.voter)

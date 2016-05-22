@@ -10,6 +10,18 @@
 
 {% block content %}
 
+        <div class="row">
+        <div class="col-md-6 col-lg-offset-3">
+            <p align='center'>
+                {% if user.is_authenticated %}
+                    Il te reste <b>{{ request.user.voter.dokp }} points</b> à répartir parmis ces propositions.
+                {% else %}
+                    Connecte toi pour voter!
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
         {% for proposition, is_up_pointable, is_down_pointable, is_big_up_pointable, is_big_down_pointable, ponts, nb_points_from_user, up_voted, down_voted, nb_up_votes, nb_down_votes in propositions %}
          <div class="row mt centered">
             <div class="col-md-10 col-lg-offset-1">

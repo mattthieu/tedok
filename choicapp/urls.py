@@ -10,7 +10,7 @@ urlpatterns = [
         views.down_visibility, name='down_visibility'),
     url(r'^manifesti$', views.show_manifesti, name='manifesti'),
     url(r'^add_value/$', views.ValueCreate.as_view(), name='add_value'),
-    url(r'^edit_value/(?P<value_id>\d+)/$',
+    url(r'^edit_value/(?P<pk>[0-9]+)/$',
         views.ValueUpdate.as_view(), name='edit_value'),
     url(r'^add_logbookpost/$',
         views.AddLogBookPost.as_view(), name='add_logbookpost'),

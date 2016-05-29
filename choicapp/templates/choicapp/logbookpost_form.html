@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block header %}
+      Rajoute un article au journal de bord.
+{% endblock header %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="" method="post">{% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" value="Enregistrer" />
+            </form>
+        </div>      
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

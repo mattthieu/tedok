@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     url(r'^', include('choicapp.urls', namespace='choicapp')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts-reset/', include('password_reset.urls')),
+    url(r'^accounts/logout/$', lambda request: logout_then_login(request, "/"),
+        name='logout'),
+    url(r'^accounts/', include('django.contrib.auth.urls',
+                               namespace='accounts')),
 ]

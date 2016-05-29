@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from choicapp.models import Value, Item_Voted, LogBookPost, Glossary_Word, Item
 from choicapp.models import Proposition
 from choicapp.forms import ValueForm, LogBookPostForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
@@ -141,30 +141,6 @@ def show_propositions(request):
     context['propositions'] = new_propositions
     context['big_pts'] = BIG_POINTS
     return render(request, 'choicapp/propositions.html', context=context)
-
-
-def login_user(request):
-    error = False
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username,
-                                password=password)
-            if user:
-                login(request, user)
-            else:  # user is none
-                error = True
-    else:
-        form = AuthenticationForm()
-    return render(request, 'choicapp/login.html',
-                  {'form': form, 'error': error})
-
-
-def logout_user(request):
-    logout(request)
-    return redirect('/')
 
 
 @login_required

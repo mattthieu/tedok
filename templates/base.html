@@ -59,9 +59,9 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'choicapp:logout' %}">Deconnection {{ user.username }}</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Deconnection {{ user.username }}</a></li>
                 {% else %}
-                    <li><a href="{% url 'choicapp:login' %}">Connection</a></li>
+                    <li><a href="{% url 'accounts:login' %}">Connection</a></li>
                 {% endif %}
               </ul>
             </div>

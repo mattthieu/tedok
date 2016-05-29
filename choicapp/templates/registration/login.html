@@ -16,7 +16,7 @@
                 {% if user.is_authenticated %}
                     Tu es maintenant connecté, {{ user.username }} !
                 {% else %}
-                    <form action="{% url 'choicapp:login' %}" method="post" action=".">{% csrf_token %}
+                    <form action="{% url 'accounts:login' %}" method="post" action=".">{% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" value="Ok" />
                     </form>

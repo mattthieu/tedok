@@ -153,6 +153,10 @@ if type_dev == 'prod':
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+# Login
+LOGIN_REDIRECT_URL = '/'
+
+
 # Email
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

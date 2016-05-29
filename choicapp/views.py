@@ -86,19 +86,7 @@ def show_glossary(request):
 
 
 def show_logbook(request, *args, **kwargs):
-    context = {}
-    posts = []
-    try:
-        max_date = max([post.date for post in LogBookPost.objects.all()])
-    except:
-        max_date = date(2004, 3, 28)
-    for post in LogBookPost.objects.all():
-        if post.date == max_date:
-            editable = True
-        else:
-            editable = False
-        posts.append((post, editable))
-    context = {'posts': posts}
+    context = {'posts': LogBookPost.objects.all().order_by('-date')}
     return render(request, 'choicapp/logbook.html', context=context)
 
 
@@ -106,7 +94,6 @@ def show_propositions(request):
     propositions = items_pointable(user=request.user,
                                    dok_type='proposition',
                                    item_list=Proposition.objects.all())
-    print(propositions)
     new_propositions = []
     for extended_proposition in propositions:
         proposition = extended_proposition[0]
@@ -233,68 +220,16 @@ def updown_proposition(request, *args, **kwargs):
     return redirect('/propositions')
 
 
-class AddLogBookPost(View):
-    '''class based view to add/edit a logbook post.'''
-    form_class = LogBookPostForm
+class LogbookpostCreate(CreateView):
     model = LogBookPost
-    template_name = 'choicapp/add_logbook_post.html'
-    template_redirect = '/logbook'
-    object_name = 'logbookpost_id'
+    fields = ['content', 'date']
+    template_name_suffix = '_form'
 
-    def get(self, request, *args, **kwargs):
-        if self.object_name in kwargs.keys():
-            instance = get_object_or_404(self.model,
-                                         pk=kwargs[self.object_name])
-            object_id = kwargs[self.object_name]
-        else:
-            instance = self.model()
-            object_id = []
-        if request.user.is_authenticated():
-            form = self.form_class(instance=instance)
-            return render(request, self.template_name,
-                          {'form': form, self.object_name: object_id})
-        else:
-            return redirect(self.template_redirect)
 
-    @method_decorator(login_required)
-    def post(self, request, *args, **kwargs):
-        # precompute the most recent date among other blog posts
-        try:
-            max_date = max([post.date for post in LogBookPost.objects.all()])
-        except:
-            max_date = date(2004, 3, 28)
-
-        if self.object_name in kwargs.keys():
-            instance = get_object_or_404(self.model,
-                                         pk=kwargs[self.object_name])
-            object_id = kwargs[self.object_name]
-            # make sure blog post is not too old
-            # old posts are not editable
-            if instance.date < max_date:
-                return redirect(self.template_redirect)
-        else:
-            instance = self.model()
-            object_id = []
-            # Cannot add another blog post when another was opened the same day
-            if date.today() == max_date:
-                messages.error(request, 'You cannot post twice the same day.\
-                                         Please edit the most recent post.')
-                return redirect(self.template_redirect)
-        form = self.form_class(request.POST, instance=instance)
-        if form.is_valid():
-            # <process form cleaned data>
-            try:
-                w = form.save(commit=False)
-                # check that we are not modifying an existing post
-                # if we create from scratch, then set the date to toda
-                if self.object_name not in kwargs.keys():
-                    w.date = date.today()
-                w.save()
-                return redirect(self.template_redirect)
-            except:
-                pass
-        return render(request, self.template_name,
-                      {'form': form, self.object_name: object_id})
+class LogbookpostUpdate(UpdateView):
+    model = LogBookPost
+    fields = ['content', 'date']
+    template_name_suffix = '_form'
 
 
 class PropositionCreate(CreateView):

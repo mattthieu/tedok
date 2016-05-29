@@ -66,6 +66,9 @@ class LogBookPost(models.Model):
     date = models.DateField()
     content = models.TextField()
 
+    def get_absolute_url(self):
+        return reverse('choicapp:logbook')
+
 
 class Glossary_Word(models.Model):
     word = models.CharField(max_length=100)

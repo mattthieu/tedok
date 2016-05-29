@@ -17,13 +17,12 @@
             </ul>
             {% endif %}
         </div>
-        {% for post, editable in posts %}
+        {% for post in posts %}
         <div class="row">
             <div class="col-md-12">
             <font class="text-primary" size="5">{{ post.date }}</font>
-            {% if editable %}
-                <a class="btn btn-secondary" href="{% url 'choicapp:edit_logbookpost' post.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
-            {% endif %}
+            <a class="btn btn-secondary" href="{% url 'choicapp:edit_logbookpost' post.id %}"> <span class="glyphicon glyphicon-pencil"></span></a>
+            
             <p>
                 {{ post.content|markdownify|safe }}
             </p>

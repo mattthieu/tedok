@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from celery.schedules import crontab
 
 # if the environmnent variable WORKING_ENV_TEDOK is not defined
 # then set it to prod
@@ -167,8 +168,27 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+BIG_POINTS = 10  # the amount of points for largest votes
 DATE_FORMAT = "d M Y"
 DATE_INPUT_FORMATS = ('%d-%m-%Y',)
 USE_L10N = False
 USE_I18N = False
-BIG_POINTS = 10  # the amount of points for largest votes
+DOKP_DELIVERY = 1
+
+# Celery
+BROKER_URL = 'amqp://%s:%s@%s/%s' % (os.environ.get('RMQ_USER'),
+                                     os.environ.get('RMQ_PASSWORD'),
+                                     os.environ.get('IP_MASTER'),
+                                     os.environ.get('RMQ_VHOST'))
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
+CELERYBEAT_SCHEDULE = {
+    'save-train-model-in-db': {
+        'task': 'choicapp.tasks.deliver_dokp',
+        'schedule': crontab(minute=0, hour=0),
+        'options': {'queue': 'master_periodic'},
+    },
+}

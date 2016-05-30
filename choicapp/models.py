@@ -47,8 +47,8 @@ class Proposition(Item):
 
     STATUS_CHOICES = (
         ('pending', 'En cours'),
-        ('voted', 'Voté'),
-        ('rejected', 'Rejeté/Expiré'))
+        ('voted', 'Vote'),
+        ('rejected', 'Rejete/Expire'))
     status = models.CharField(max_length=30, choices=STATUS_CHOICES,
                               default='pending')
 

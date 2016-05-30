@@ -45,6 +45,13 @@ class Value(Item):
 class Proposition(Item):
     deadline = models.DateField(help_text='DD/MM/YYYY')
 
+    STATUS_CHOICES = (
+        ('pending', 'En cours'),
+        ('voted', 'Voté'),
+        ('rejected', 'Rejeté/Expiré'))
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES,
+                              default='pending')
+
     def get_absolute_url(self):
         return reverse('choicapp:propositions')
 

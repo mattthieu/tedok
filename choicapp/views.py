@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from choicapp.models import Value, Item_Voted, LogBookPost, Glossary_Word, Item
 from choicapp.models import Proposition
-from choicapp.forms import ValueForm, LogBookPostForm
 # from django.contrib.auth.forms import AuthenticationForm
 # from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -94,7 +93,9 @@ def show_propositions(request):
     propositions = items_pointable(user=request.user,
                                    dok_type='proposition',
                                    item_list=Proposition.objects.all())
-    new_propositions = []
+    new_propositions_status_pending = []
+    new_propositions_status_voted = []
+    new_propositions_status_rejected = []
     for extended_proposition in propositions:
         proposition = extended_proposition[0]
         nb_up_votes = len(proposition.item_voted_set
@@ -121,11 +122,25 @@ def show_propositions(request):
             except:
                 up_voted = False
                 down_voted = False
-        new_propositions.append(extended_proposition +
-                                (up_voted, down_voted,
-                                 nb_up_votes, nb_down_votes))
+        if proposition.status == 'pending':
+            new_propositions_status_pending.append(extended_proposition +
+                                                   (up_voted, down_voted,
+                                                    nb_up_votes,
+                                                    nb_down_votes))
+        if proposition.status == 'voted':
+            new_propositions_status_voted.append(extended_proposition +
+                                                 (up_voted, down_voted,
+                                                  nb_up_votes,
+                                                  nb_down_votes))
+        if proposition.status == 'rejected':
+            new_propositions_status_rejected.append(extended_proposition +
+                                                    (up_voted, down_voted,
+                                                     nb_up_votes,
+                                                     nb_down_votes))
     context = {}
-    context['propositions'] = new_propositions
+    context['propositions_pending'] = new_propositions_status_pending
+    context['propositions_voted'] = new_propositions_status_voted
+    context['propositions_rejected'] = new_propositions_status_rejected
     context['big_pts'] = BIG_POINTS
     return render(request, 'choicapp/propositions.html', context=context)
 

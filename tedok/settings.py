@@ -176,19 +176,22 @@ USE_I18N = False
 DOKP_DELIVERY = 1
 
 # Celery
-BROKER_URL = 'amqp://%s:%s@%s/%s' % (os.environ.get('RMQ_USER'),
-                                     os.environ.get('RMQ_PASSWORD'),
-                                     os.environ.get('IP_MASTER'),
-                                     os.environ.get('RMQ_VHOST'))
+if type_dev != 'dev':
+    BROKER_URL = 'amqp://xbrkmcdt:8uGUH2nPCaVmfopI_Y-nWboPZM2lff6e' +\
+        '@jellyfish.rmq.cloudamqp.com/xbrkmcdt'
+else:
+    BROKER_URL = 'amqp://%s:%s@localhost:5672/vhost_tedok'\
+        % (os.environ.get('TEDOK_DB_USER'), os.environ.get('TEDOK_DB_PASSWORD'))
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
+CELERY_TIMEZONE = 'Europe/Paris'
 TEST_RUNNER = 'djcelery.contrib.test_runner.CeleryTestSuiteRunner'
 CELERYBEAT_SCHEDULE = {
     'save-train-model-in-db': {
         'task': 'choicapp.tasks.deliver_dokp',
         'schedule': crontab(minute=0, hour=0),
-        'options': {'queue': 'master_periodic'},
+#        'options': {'queue': 'master_periodic'},
     },
 }
